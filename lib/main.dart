@@ -1,12 +1,28 @@
+// ignore_for_file: unnecessary_import
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:planea/bloc/game/game_cubit.dart';
 import 'dart:math' as math;
+import 'package:planea/game.dart';
 
 void main() {
-  runApp(GameWidget(game: FlameGame(world: MyWorld())));
+  runApp(const MyGameApp());
+}
+
+class MyGameApp extends StatelessWidget {
+  const MyGameApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (BuildContext context) => GameCubit(),
+      child: const MaterialApp(title: 'Planea', home: GamePage()),
+    );
+  }
 }
 
 class MyWorld extends World with TapCallbacks {
