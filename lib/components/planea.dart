@@ -44,7 +44,7 @@ class PlanePosition extends PositionComponent
   @override
   void update(double dt) {
     super.update(dt);
-    if (bloc.state.currentPlayingState != PlayingState.playing) {
+    if (bloc.state.currentPlayingState.isNotPlaying) {
       return; // Prevent jumping if the game is not in playing state
     }
     _velocity += _gravity * dt; // Apply gravity to velocity
@@ -59,7 +59,7 @@ class PlanePosition extends PositionComponent
   }
 
   void jump() {
-    if (bloc.state.currentPlayingState != PlayingState.playing) {
+    if (bloc.state.currentPlayingState.isNotPlaying) {
       return; // Prevent jumping if the game is not in playing state
     }
     _velocity = _jumpForce;
@@ -68,7 +68,7 @@ class PlanePosition extends PositionComponent
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
-    if (bloc.state.currentPlayingState != PlayingState.playing) {
+    if (bloc.state.currentPlayingState.isNotPlaying) {
       return; // Prevent collision effects if the game is not in playing state
     }
     if (other is HiddenCoin) {

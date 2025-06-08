@@ -44,6 +44,9 @@ dependencies:
   equatable: ^2.0.7
   flutter_bloc: ^9.1.1
   bloc: ^9.0.0
+  flutter_animate: ^4.5.2
+  flutter_soloud: ^3.1.10
+  get_it: ^8.0.3
 
 dev_dependencies:
   flutter_test:
@@ -71,7 +74,12 @@ flutter:
   assets:
     - assets/images/
     - assets/images/background/
+    - assets/audio/
 
+  fonts:
+    - family: Chewy
+      fonts:
+        - asset: assets/fonts/Chewy-Regular.ttf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

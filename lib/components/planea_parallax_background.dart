@@ -29,7 +29,7 @@ class PlaneaParallaxBackground extends ParallaxComponent<PlaneaGame>
   @override
   void update(double dt) {
     switch (bloc.state.currentPlayingState) {
-      case PlayingState.none:
+      case PlayingState.idle:
       case PlayingState.playing:
         super.update(dt);
         break;
@@ -37,6 +37,5 @@ class PlaneaParallaxBackground extends ParallaxComponent<PlaneaGame>
       case PlayingState.gameOver:
         break;
     }
-    super.update(dt);
   }
 }

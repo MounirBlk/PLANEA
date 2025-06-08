@@ -1,3 +1,4 @@
+// ignore_for_file: unused_import
 import 'dart:async';
 import 'dart:ui';
 
@@ -7,7 +8,7 @@ import 'package:flame/palette.dart';
 
 class HiddenCoin extends PositionComponent {
   HiddenCoin({required super.position})
-    : super(size: Vector2(24, 24), anchor: Anchor.center);
+    : super(size: Vector2(40, 40), anchor: Anchor.center);
 
   @override
   FutureOr<void> onLoad() async {
@@ -15,7 +16,7 @@ class HiddenCoin extends PositionComponent {
     add(CircleHitbox(collisionType: CollisionType.passive));
   }
 
-  @override
+  /*@override
   void render(Canvas canvas) {
     super.render(canvas);
     canvas.drawCircle(
@@ -23,5 +24,5 @@ class HiddenCoin extends PositionComponent {
       size.x / 2,
       BasicPalette.yellow.paint(),
     );
-  }
+  }*/
 }

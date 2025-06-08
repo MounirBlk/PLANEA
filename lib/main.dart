@@ -5,11 +5,14 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:planea/audio_helper.dart';
 import 'package:planea/bloc/game/game_cubit.dart';
 import 'dart:math' as math;
 import 'package:planea/game.dart';
+import 'package:planea/service_locator.dart';
 
-void main() {
+main() async {
+  await setupServiceLocator();
   runApp(const MyGameApp());
 }
 
@@ -19,8 +22,12 @@ class MyGameApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => GameCubit(),
-      child: const MaterialApp(title: 'Planea', home: GamePage()),
+      create: (BuildContext context) => GameCubit(getIt.get<AudioHelper>()),
+      child: MaterialApp(
+        title: 'Planea',
+        theme: ThemeData(fontFamily: 'Chewy'),
+        home: const GamePage(),
+      ),
     );
   }
 }
