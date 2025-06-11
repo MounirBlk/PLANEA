@@ -1,9 +1,9 @@
 import 'package:flame/components.dart';
 import 'package:flame_bloc/flame_bloc.dart';
-import 'package:planea/bloc/game/game_cubit.dart';
-import 'package:planea/bloc/game/game_state.dart';
-import 'package:planea/components/hidden_coin.dart';
-import 'package:planea/components/pipe.dart';
+import 'package:planea/presentation/bloc/game/game_cubit.dart';
+import 'package:planea/presentation/bloc/game/game_state.dart';
+import 'package:planea/presentation/components/hidden_coin.dart';
+import 'package:planea/presentation/components/pipe.dart';
 
 class PipePairPosition extends PositionComponent
     with FlameBlocReader<GameCubit, GameState> {

@@ -6,9 +6,9 @@ import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planea/audio_helper.dart';
-import 'package:planea/bloc/game/game_cubit.dart';
+import 'package:planea/presentation/bloc/game/game_cubit.dart';
 import 'dart:math' as math;
-import 'package:planea/game.dart';
+import 'package:planea/presentation/pages/game.dart';
 import 'package:planea/service_locator.dart';
 
 main() async {

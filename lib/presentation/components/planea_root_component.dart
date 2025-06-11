@@ -4,12 +4,12 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:planea/bloc/game/game_cubit.dart';
-import 'package:planea/bloc/game/game_state.dart';
-import 'package:planea/components/pipe_pair.dart';
-import 'package:planea/components/planea.dart';
-import 'package:planea/components/planea_parallax_background.dart';
-import 'package:planea/planea_game.dart';
+import 'package:planea/presentation/bloc/game/game_cubit.dart';
+import 'package:planea/presentation/bloc/game/game_state.dart';
+import 'package:planea/presentation/components/pipe_pair.dart';
+import 'package:planea/presentation/components/planea.dart';
+import 'package:planea/presentation/components/planea_parallax_background.dart';
+import 'package:planea/presentation/planea_game.dart';
 
 class PlaneaRootComponent extends Component
     with HasGameReference<PlaneaGame>, FlameBlocReader<GameCubit, GameState> {

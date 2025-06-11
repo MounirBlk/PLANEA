@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:planea/bloc/game/game_cubit.dart';
-import 'package:planea/bloc/game/game_state.dart';
+import 'package:planea/presentation/bloc/game/game_cubit.dart';
+import 'package:planea/presentation/bloc/game/game_state.dart';
 
 class GameOverWidget extends StatelessWidget {
   const GameOverWidget({super.key});

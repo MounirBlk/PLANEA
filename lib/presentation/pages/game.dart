@@ -2,10 +2,14 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:planea/bloc/game/game_cubit.dart';
-import 'package:planea/bloc/game/game_state.dart';
-import 'package:planea/planea_game.dart';
-import 'package:planea/widget/game_over_widget.dart';
+import 'package:planea/presentation/app_style.dart';
+import 'package:planea/presentation/bloc/game/game_cubit.dart';
+import 'package:planea/presentation/bloc/game/game_state.dart';
+import 'package:planea/presentation/dialogs/app_dialogs.dart';
+import 'package:planea/presentation/planea_game.dart';
+import 'package:planea/presentation/widget/best_score_overlay.dart';
+import 'package:planea/presentation/widget/game_over_widget.dart';
+import 'package:planea/presentation/widget/profile_overlay.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
@@ -42,7 +46,12 @@ class _GameState extends State<GamePage> {
         return Scaffold(
           body: Stack(
             children: [
-              GameWidget(game: _planeaGame),
+              GameWidget(
+                game: _planeaGame,
+                backgroundBuilder: (BuildContext context) {
+                  return Container(color: AppColors.backgroundColor);
+                },
+              ),
               if (state.currentPlayingState.isGameOver) const GameOverWidget(),
               if (state.currentPlayingState.isIdle)
                 Align(
@@ -80,6 +89,19 @@ class _GameState extends State<GamePage> {
                     ),
                   ),
                 ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const ProfileOverlay(),
+                    const SizedBox(height: 8),
+                    BestScoreOverlay(
+                      onTap: () => AppDialogs.showLeaderboard(context),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         );

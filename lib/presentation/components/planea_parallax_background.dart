@@ -1,9 +1,9 @@
 import 'package:flame/components.dart';
 import 'package:flame/parallax.dart';
 import 'package:flame_bloc/flame_bloc.dart';
-import 'package:planea/bloc/game/game_cubit.dart';
-import 'package:planea/bloc/game/game_state.dart';
-import 'package:planea/planea_game.dart';
+import 'package:planea/presentation/bloc/game/game_cubit.dart';
+import 'package:planea/presentation/bloc/game/game_state.dart';
+import 'package:planea/presentation/planea_game.dart';
 
 class PlaneaParallaxBackground extends ParallaxComponent<PlaneaGame>
     with FlameBlocReader<GameCubit, GameState> {

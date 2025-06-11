@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:planea/audio_helper.dart';
-import 'package:planea/bloc/game/game_state.dart';
+import 'package:planea/presentation/bloc/game/game_state.dart';
 
 class GameCubit extends Cubit<GameState> {
   GameCubit(this._audioHelper) : super(const GameState());

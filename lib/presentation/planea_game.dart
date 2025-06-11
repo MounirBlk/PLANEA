@@ -9,12 +9,12 @@ import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:planea/audio_helper.dart';
-import 'package:planea/bloc/game/game_cubit.dart';
-import 'package:planea/bloc/game/game_state.dart';
-import 'package:planea/components/pipe_pair.dart';
-import 'package:planea/components/planea.dart';
-import 'package:planea/components/planea_parallax_background.dart';
-import 'package:planea/components/planea_root_component.dart';
+import 'package:planea/presentation/bloc/game/game_cubit.dart';
+import 'package:planea/presentation/bloc/game/game_state.dart';
+import 'package:planea/presentation/components/pipe_pair.dart';
+import 'package:planea/presentation/components/planea.dart';
+import 'package:planea/presentation/components/planea_parallax_background.dart';
+import 'package:planea/presentation/components/planea_root_component.dart';
 import 'package:planea/service_locator.dart';
 
 class PlaneaGame extends FlameGame<PlaneaWorld>

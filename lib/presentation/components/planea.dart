@@ -2,11 +2,11 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_bloc/flame_bloc.dart';
-import 'package:planea/bloc/game/game_cubit.dart';
-import 'package:planea/bloc/game/game_state.dart';
-import 'package:planea/components/hidden_coin.dart';
-import 'package:planea/components/pipe.dart';
-import 'package:planea/planea_game.dart';
+import 'package:planea/presentation/bloc/game/game_cubit.dart';
+import 'package:planea/presentation/bloc/game/game_state.dart';
+import 'package:planea/presentation/components/hidden_coin.dart';
+import 'package:planea/presentation/components/pipe.dart';
+import 'package:planea/presentation/planea_game.dart';
 
 class PlanePosition extends PositionComponent
     with
