@@ -10,8 +10,10 @@ import 'package:planea/presentation/bloc/game/game_cubit.dart';
 import 'dart:math' as math;
 import 'package:planea/presentation/pages/game.dart';
 import 'package:planea/service_locator.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 main() async {
+  await dotenv.load(fileName: ".env");
   await setupServiceLocator();
   runApp(const MyGameApp());
 }
