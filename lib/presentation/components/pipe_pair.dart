@@ -22,7 +22,7 @@ class PipePairPosition extends PositionComponent
     addAll([
       PipePosition(isFlipped: false, position: Vector2(0, gap / 2)),
       PipePosition(isFlipped: true, position: Vector2(0, -(gap / 2))),
-      HiddenCoin(position: Vector2(30, 0)),
+      HiddenCoin(position: Vector2(0, 0)),
     ]);
   }
 

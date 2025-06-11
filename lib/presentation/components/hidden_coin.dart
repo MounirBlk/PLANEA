@@ -16,7 +16,7 @@ class HiddenCoin extends PositionComponent {
     add(CircleHitbox(collisionType: CollisionType.passive));
   }
 
-  /*@override
+  @override
   void render(Canvas canvas) {
     super.render(canvas);
     canvas.drawCircle(
@@ -24,5 +24,5 @@ class HiddenCoin extends PositionComponent {
       size.x / 2,
       BasicPalette.yellow.paint(),
     );
-  }*/
+  }
 }
