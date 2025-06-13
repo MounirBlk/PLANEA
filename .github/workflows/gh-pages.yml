@@ -2,7 +2,7 @@ name: Gh-Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
 
 jobs:
   build:
@@ -12,5 +12,3 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
       - uses: bluefireteam/flutter-gh-pages@v9
-        with:
-          baseHref: /PLANEA/
