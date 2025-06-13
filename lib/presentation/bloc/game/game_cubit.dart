@@ -1,3 +1,4 @@
+// ignore_for_file: unused_import
 import 'package:bloc/bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:planea/audio_helper.dart';
@@ -13,15 +14,11 @@ class GameCubit extends Cubit<GameState> {
 
   void _initializeNakama() async {
     final client = getNakamaClient(
-      host: dotenv.get('NAKAMA_HOST', fallback: '127.0.0.1'),
+      host: '127.0.0.1',
       ssl: false,
-      serverKey: dotenv.get('NAKAMA_SERVER_KEY', fallback: 'defaultkey'),
-      grpcPort: int.parse(
-        dotenv.get('NAKAMA_GRPC_PORT', fallback: '7349'),
-      ), // optional
-      httpPort: int.parse(
-        dotenv.get('NAKAMA_HTTP_PORT', fallback: '7350'),
-      ), // optional
+      serverKey: 'defaultkey',
+      grpcPort: 7349, // optional
+      httpPort: 7350, // optional
     );
     final session = await client.authenticateDevice(
       deviceId: 'test-device-id',

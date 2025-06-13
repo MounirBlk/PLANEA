@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_import
+// ignore_for_file: unnecessary_import, unused_import
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -13,7 +13,7 @@ import 'package:planea/service_locator.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 main() async {
-  await dotenv.load(fileName: ".env");
+  //await dotenv.load(fileName: ".env");
   await setupServiceLocator();
   runApp(const MyGameApp());
 }

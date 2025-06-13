@@ -79,7 +79,7 @@ flutter:
     - assets/images/background/
     - assets/audio/
     - assets/icons/
-    - .env
+    # - .env
 
   fonts:
     - family: Chewy
