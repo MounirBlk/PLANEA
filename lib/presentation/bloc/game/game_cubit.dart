@@ -13,25 +13,38 @@ class GameCubit extends Cubit<GameState> {
   final AudioHelper _audioHelper;
 
   void _initializeNakama() async {
-    final client = getNakamaClient(
-      host: '127.0.0.1',
-      ssl: false,
-      serverKey: 'defaultkey',
-      grpcPort: 7349, // optional
-      httpPort: 7350, // optional
-    );
-    final session = await client.authenticateDevice(
-      deviceId: 'test-device-id',
-      username: 'lumi',
-    );
-    print('Session is: ${session.token}');
-
-    final group = await client.createGroup(
-      session: session,
-      name: 'Flutter devs',
-      description: 'This is a cool group for Flutter devs!',
-    );
-    print('Group is created: ${group.id}');
+    try {
+      // ignore: avoid_print
+      print('INITIALIZE NAKAMA !');
+      const nakameHost = String.fromEnvironment(
+        'NAKAMA_HOST',
+        defaultValue: '127.0.0.1',
+      );
+      if (nakameHost.trim().isEmpty) {
+        throw Exception('Something went wrong: Nakama host not valid !');
+      }
+      const nakamaServerKey = String.fromEnvironment(
+        'NAKAMA_SERVER_KEY',
+        defaultValue: 'defaultkey',
+      );
+      if (nakamaServerKey.trim().isEmpty) {
+        throw Exception('Something went wrong: Nakama server key not valid !');
+      }
+      final client = getNakamaClient(
+        host: nakameHost,
+        ssl: true,
+        serverKey: nakamaServerKey,
+        grpcPort: 8349, // optional
+        httpPort: 8350, // optional
+      );
+      final session = await client.authenticateDevice(
+        deviceId: 'test-device-id',
+        username: 'lumi',
+      );
+      print('Session is: ${session.token}');
+    } catch (e) {
+      print('Nakama error: ${e.toString()}');
+    }
   }
 
   void startPlaying() {
