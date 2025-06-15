@@ -1,0 +1,38 @@
+import 'package:bloc/bloc.dart';
+import 'package:planea/audio_helper.dart';
+import 'package:planea/domain/repositories/game_repository.dart';
+import 'package:planea/presentation/pages/splash/cubit/splash_state.dart';
+import 'package:planea/service_locator.dart';
+
+class SplashCubit extends Cubit<SplashState> {
+  SplashCubit(this._gameRepository) : super(const SplashState());
+
+  static const _splashDuration = Duration(seconds: 2);
+  final GameRepository _gameRepository;
+
+  Future<void> _initialize() async {
+    await _gameRepository.initSession();
+    await getIt.get<AudioHelper>().initialize();
+  }
+
+  void onPageOpen() async {
+    try {
+      final startTime = DateTime.now();
+      await _initialize();
+      final endTime = DateTime.now();
+      final difference = endTime.difference(startTime);
+      if (difference < _splashDuration) {
+        await Future.delayed(_splashDuration - difference);
+      }
+      _openHomePage();
+    } catch (e, stack) {
+      // ignore: avoid_print
+      print('error: $e, $stack');
+    }
+  }
+
+  void _openHomePage() async {
+    emit(state.copyWith(openHomePage: true));
+    emit(state.copyWith(openHomePage: false));
+  }
+}

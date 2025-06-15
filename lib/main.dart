@@ -6,9 +6,11 @@ import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planea/audio_helper.dart';
+import 'package:planea/domain/repositories/game_repository.dart';
 import 'package:planea/presentation/bloc/game/game_cubit.dart';
 import 'dart:math' as math;
 import 'package:planea/presentation/pages/game.dart';
+import 'package:planea/presentation/pages/splash/splash_pages.dart';
 import 'package:planea/service_locator.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -24,11 +26,12 @@ class MyGameApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => GameCubit(getIt.get<AudioHelper>()),
+      create: (BuildContext context) =>
+          GameCubit(getIt.get<AudioHelper>(), getIt.get<GameRepository>()),
       child: MaterialApp(
         title: 'Planea',
         theme: ThemeData(fontFamily: 'Chewy'),
-        home: const GamePage(),
+        home: const SplashPage(),
       ),
     );
   }

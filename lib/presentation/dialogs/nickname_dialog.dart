@@ -1,7 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:planea/domain/extensions/user_extension.dart';
+import 'package:planea/presentation/bloc/game/game_cubit.dart';
 
-class NicknameDialog extends StatelessWidget {
+class NicknameDialog extends StatefulWidget {
   const NicknameDialog({super.key});
+
+  @override
+  State<NicknameDialog> createState() => _NicknameDialogState();
+}
+
+class _NicknameDialogState extends State<NicknameDialog> {
+  late TextEditingController _textEditingController;
+
+  @override
+  void initState() {
+    final name = context
+        .read<GameCubit>()
+        .state
+        .currentUserAccount
+        ?.user
+        .showingName;
+    _textEditingController = TextEditingController(text: name);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +45,9 @@ class NicknameDialog extends StatelessWidget {
                 style: TextStyle(fontFamily: 'Roboto', fontSize: 28),
               ),
               const SizedBox(height: 24),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: _textEditingController,
+                decoration: const InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black, width: 1.0),
                   ),
@@ -33,12 +56,13 @@ class NicknameDialog extends StatelessWidget {
                   ),
                   hintText: 'Nickname',
                 ),
+                maxLength: 12,
               ),
               const SizedBox(height: 16),
               SizedBox(
                 width: 240,
                 child: FilledButton.tonal(
-                  onPressed: () {},
+                  onPressed: _onSaveClicked,
                   child: const Text('SAVE'),
                 ),
               ),
@@ -47,5 +71,18 @@ class NicknameDialog extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onSaveClicked() {
+    final gameCubit = context.read<GameCubit>();
+    final newName = _textEditingController.text;
+    gameCubit.updateUserDisplayName(newName);
+    Navigator.of(context).pop();
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
   }
 }

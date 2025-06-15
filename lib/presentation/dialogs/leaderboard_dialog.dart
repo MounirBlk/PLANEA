@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:planea/presentation/app_style.dart';
+import 'package:planea/presentation/bloc/game/game_cubit.dart';
+import 'package:planea/presentation/bloc/game/game_state.dart';
 import 'package:planea/presentation/dialogs/app_dialogs.dart';
 
 class LeaderBoardDialog extends StatelessWidget {
@@ -54,20 +57,27 @@ class LeaderBoardDialog extends StatelessWidget {
             ),
             SizedBox(
               height: 400,
-              child: ListView.separated(
-                padding: const EdgeInsets.only(top: 18, bottom: 12),
-                itemBuilder: (context, index) {
-                  return LeaderboardRow(
-                    rank: index + 1,
-                    name: 'Player ${index + 1}',
-                    score: index * 12,
-                    isMine: index == 2,
-                    onMyProfileTap: () => AppDialogs.nicknameDialog(context),
+              child: BlocBuilder<GameCubit, GameState>(
+                builder: (context, state) {
+                  return ListView.separated(
+                    padding: const EdgeInsets.only(top: 18, bottom: 12),
+                    itemBuilder: (context, index) {
+                      final (record, name) = state.leaderboardEntity![index];
+                      return LeaderboardRow(
+                        rank: int.parse(record.rank ?? '9999'),
+                        name: name,
+                        score: int.parse(record.score ?? '0'),
+                        isMine:
+                            record.ownerId == state.currentUserAccount?.user.id,
+                        onMyProfileTap: () =>
+                            AppDialogs.nicknameDialog(context),
+                      );
+                    },
+                    separatorBuilder: (context, index) =>
+                        Container(height: 1, color: Colors.white10),
+                    itemCount: state.leaderboardEntity?.length ?? 0,
                   );
                 },
-                separatorBuilder: (context, index) =>
-                    Container(height: 1, color: Colors.white10),
-                itemCount: 20,
               ),
             ),
           ],
