@@ -142,7 +142,7 @@ class LeaderboardRow extends StatelessWidget {
                 const Align(
                   alignment: Alignment(0, 0.3),
                   child: Text(
-                    '(edit)',
+                    '(modifier)',
                     style: TextStyle(color: AppColors.blueColor),
                   ),
                 ),
