@@ -1,6 +1,6 @@
-# planea
+# PLANEA
 
-A new Flutter project.
+FLUTTER + FLAME + NAKAMA
 
 ## Getting Started
 
