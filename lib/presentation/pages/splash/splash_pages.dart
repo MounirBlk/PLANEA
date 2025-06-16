@@ -1,5 +1,7 @@
+// ignore_for_file: unused_import
+import 'package:go_router/go_router.dart';
 import 'package:planea/domain/repositories/game_repository.dart';
-import 'package:planea/presentation/pages/game.dart';
+import 'package:planea/presentation/pages/game/game.dart';
 import 'package:planea/presentation/pages/splash/cubit/splash_state.dart';
 import 'package:planea/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +39,10 @@ class _SplashPageContentState extends State<SplashPageContent> {
     return BlocConsumer<SplashCubit, SplashState>(
       listener: (context, state) {
         if (state.openHomePage) {
-          Navigator.of(context).pushReplacement(
+          /*Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const GamePage()),
-          );
+          );*/
+          GoRouter.of(context).replace('/');
         }
       },
       builder: (context, state) {

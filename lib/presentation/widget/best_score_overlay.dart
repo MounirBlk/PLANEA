@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planea/presentation/app_style.dart';
+import 'package:planea/presentation/bloc/game/game_cubit.dart';
+import 'package:planea/presentation/bloc/game/game_state.dart';
+import 'package:planea/presentation/dialogs/leaderboard_dialog.dart';
+import 'package:planea/presentation/responsive/screen_size.dart';
 
 import 'box_overlay.dart';
 
@@ -11,63 +15,59 @@ class BestScoreOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
-        onTap: onTap,
-        child: BoxOverlay(
+    final screenSize = ScreenSize.fromContext(context);
+    final multiplier = switch (screenSize) {
+      ScreenSize.extraSmall => 0.6,
+      ScreenSize.small => 0.7,
+      ScreenSize.medium => 1.0,
+      ScreenSize.large => 1.1,
+      ScreenSize.extraLarge => 1.2,
+    };
+    double relative(double value) => value * multiplier;
+
+    return BlocBuilder<GameCubit, GameState>(
+      builder: (context, state) {
+        final record = state.leaderboardEntity?.ownerRecord;
+        int? rank = int.tryParse(record?.rank ?? '');
+        int score = int.tryParse(record?.score ?? '') ?? 0;
+        return BoxOverlay(
+          padding: EdgeInsets.symmetric(
+            horizontal: relative(14.0),
+            vertical: relative(6.0),
+          ),
+          onTap: onTap,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(
-                width: 32,
-                height: 32,
-                child: Stack(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icons/ic_trophy.svg',
-                      height: 32,
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.leaderboardGoldenColor,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                    const Align(
-                      alignment: Alignment(0.0, -0.8),
-                      child: Text(
-                        '2',
-                        style: TextStyle(
-                          color: AppColors.leaderboardGoldenColorText,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 18),
-              const Column(
+              switch (rank) {
+                null || <= 3 => ScoreTrophy(size: 32, rank: rank),
+                _ => NormalScore(size: 38, rank: rank),
+              },
+              SizedBox(width: relative(18)),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Your best',
                     style: TextStyle(
                       color: AppColors.whiteTextColor,
-                      fontSize: 12,
+                      fontSize: relative(16),
                       fontFamily: 'Roboto',
                     ),
                   ),
                   Text(
-                    '122',
-                    style: TextStyle(color: AppColors.mainColor, fontSize: 22),
+                    score.toString(),
+                    style: TextStyle(
+                      color: AppColors.mainColor,
+                      fontSize: relative(26),
+                    ),
                   ),
                 ],
               ),
             ],
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

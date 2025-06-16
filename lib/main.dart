@@ -1,23 +1,39 @@
 // ignore_for_file: unnecessary_import, unused_import
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planea/audio_helper.dart';
 import 'package:planea/domain/repositories/game_repository.dart';
+import 'package:planea/presentation/app_routes.dart';
+import 'package:planea/presentation/app_style.dart';
 import 'package:planea/presentation/bloc/game/game_cubit.dart';
 import 'dart:math' as math;
-import 'package:planea/presentation/pages/game.dart';
+import 'package:planea/presentation/pages/game/game.dart';
 import 'package:planea/presentation/pages/splash/splash_pages.dart';
 import 'package:planea/service_locator.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   //await dotenv.load(fileName: ".env");
   await setupServiceLocator();
-  runApp(const MyGameApp());
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => const MyGameApp(),
+    ),
+  );
+  //runApp(const MyGameApp());
 }
 
 class MyGameApp extends StatelessWidget {
@@ -28,11 +44,25 @@ class MyGameApp extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) =>
           GameCubit(getIt.get<AudioHelper>(), getIt.get<GameRepository>()),
-      child: MaterialApp(
+      lazy: false,
+      child: MaterialApp.router(
+        routerConfig: AppRoutes.router,
         title: 'Planea',
-        theme: ThemeData(fontFamily: 'Chewy'),
+        builder: DevicePreview.appBuilder,
+        theme: ThemeData(
+          fontFamily: 'Chewy',
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.blueColor),
+        ),
+      ), // MODE ROUTER
+      /*MaterialApp(
+        title: 'Planea',
+        builder: DevicePreview.appBuilder,
+        theme: ThemeData(
+          fontFamily: 'Chewy',
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.blueColor),
+        ),
         home: const SplashPage(),
-      ),
+      ),*/
     );
   }
 }

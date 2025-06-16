@@ -39,7 +39,6 @@ class NakamaDataSource {
       leaderboardName: leaderboardName,
       score: score,
     );
-
     return response;
   }
 
