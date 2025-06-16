@@ -14,5 +14,5 @@ jobs:
       - uses: bluefireteam/flutter-gh-pages@v9
         with:
           customArgs: >
-            --dart-define=NAKAMA_HOST=${{ secrets.NAKAMA_HOST }}
-            --dart-define=NAKAMA_SERVER_KEY=${{ secrets.NAKAMA_SERVER_KEY }}
+            --dart-define="NAKAMA_HOST=${{ secrets.NAKAMA_HOST }}"
+            --dart-define="NAKAMA_SERVER_KEY=${{ secrets.NAKAMA_SERVER_KEY }}"
