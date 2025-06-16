@@ -12,10 +12,10 @@ class NakamaDataSource {
       defaultValue: 'defaultkey',
     ),
     grpcPort: int.parse(
-      String.fromEnvironment('NAKAMA_GRPC_PORT', defaultValue: '7349'),
+      const String.fromEnvironment('NAKAMA_GRPC_PORT', defaultValue: '7349'),
     ), // optional
     httpPort: int.parse(
-      String.fromEnvironment('NAKAMA_HTTP_PORT', defaultValue: '7350'),
+      const String.fromEnvironment('NAKAMA_HTTP_PORT', defaultValue: '7350'),
     ), // optional
   );
 
