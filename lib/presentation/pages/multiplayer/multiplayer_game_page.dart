@@ -7,7 +7,7 @@ class MultiPlayerGamePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Center(child: Text('Mode multijoueurs')),
+      body: Center(child: Text('Mode multijoueur')),
     );
   }
 }

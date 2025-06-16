@@ -1,2 +1,2 @@
-flutter run --dart-define=NAKAMA_SERVER_KEY=defaultkey --dart-define=NAKAMA_HOST=127.0.0.1
-flutter build apk --dart-define=NAKAMA_SERVER_KEY=defaultkey --dart-define=NAKAMA_HOST=127.0.0.1
+flutter run --dart-define=NAKAMA_SERVER_KEY=defaultkey --dart-define=NAKAMA_HOST=127.0.0.1 --dart-define=NAKAMA_GRPC_PORT=7349 --dart-define=NAKAMA_HTTP_PORT=7350
+flutter build apk --dart-define=NAKAMA_SERVER_KEY=defaultkey --dart-define=NAKAMA_HOST=127.0.0.1 --dart-define=NAKAMA_GRPC_PORT=7349 --dart-define=NAKAMA_HTTP_PORT=7350

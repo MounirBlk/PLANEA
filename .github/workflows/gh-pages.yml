@@ -2,7 +2,7 @@ name: Gh-Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
 
 jobs:
   build:
@@ -16,3 +16,5 @@ jobs:
           customArgs: >
             --dart-define="NAKAMA_HOST=${{ secrets.NAKAMA_HOST }}"
             --dart-define="NAKAMA_SERVER_KEY=${{ secrets.NAKAMA_SERVER_KEY }}"
+            --dart-define="NAKAMA_GRPC_PORT=${{ secrets.NAKAMA_GRPC_PORT }}"
+            --dart-define="NAKAMA_HTTP_PORT=${{ secrets.NAKAMA_HTTP_PORT }}"

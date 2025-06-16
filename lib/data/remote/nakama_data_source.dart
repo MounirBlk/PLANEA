@@ -11,8 +11,12 @@ class NakamaDataSource {
       'NAKAMA_SERVER_KEY',
       defaultValue: 'defaultkey',
     ),
-    grpcPort: 443, // optional
-    httpPort: 443, // optional
+    grpcPort: int.parse(
+      String.fromEnvironment('NAKAMA_GRPC_PORT', defaultValue: '7349'),
+    ), // optional
+    httpPort: int.parse(
+      String.fromEnvironment('NAKAMA_HTTP_PORT', defaultValue: '7350'),
+    ), // optional
   );
 
   late Session _currentSession;
