@@ -41,7 +41,7 @@ class _NicknameDialogState extends State<NicknameDialog> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text(
-                'Your name',
+                'Pseudo',
                 style: TextStyle(fontFamily: 'Roboto', fontSize: 28),
               ),
               const SizedBox(height: 24),
@@ -54,7 +54,7 @@ class _NicknameDialogState extends State<NicknameDialog> {
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black, width: 1.0),
                   ),
-                  hintText: 'Nickname',
+                  hintText: 'Ecris ton pseudo',
                 ),
                 maxLength: 12,
               ),
@@ -63,7 +63,7 @@ class _NicknameDialogState extends State<NicknameDialog> {
                 width: 240,
                 child: FilledButton.tonal(
                   onPressed: _onSaveClicked,
-                  child: const Text('SAVE'),
+                  child: const Text('Sauvegarder'),
                 ),
               ),
             ],

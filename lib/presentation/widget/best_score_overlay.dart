@@ -48,7 +48,7 @@ class BestScoreOverlay extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Your best',
+                    'Score',
                     style: TextStyle(
                       color: AppColors.whiteTextColor,
                       fontSize: relative(16),
