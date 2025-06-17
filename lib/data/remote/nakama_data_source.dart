@@ -26,7 +26,7 @@ class NakamaDataSource {
   );
   final client = getNakamaClient(
     host: _host,
-    ssl: !kDebugMode,
+    ssl: true, // !kDebugMode,
     serverKey: const String.fromEnvironment(
       'NAKAMA_SERVER_KEY',
       defaultValue: 'defaultkey',
@@ -43,7 +43,7 @@ class NakamaDataSource {
   NakamaWebsocketClient _initWebsocketClient(String token) =>
       NakamaWebsocketClient.init(
         host: _host,
-        ssl: !kDebugMode,
+        ssl: true, // !kDebugMode,
         port: _httpPort,
         token: token,
         onError: (error) {

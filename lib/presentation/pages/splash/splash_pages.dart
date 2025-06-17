@@ -56,7 +56,11 @@ class _SplashPageState extends State<SplashPage> {
                   children: [
                     Expanded(child: Container()),
                     if (kDebugMode) Text(state.initializationError),
-                    Image.asset('assets/images/.png', width: 124, height: 124),
+                    Image.asset(
+                      'assets/images/planea.png',
+                      width: 124,
+                      height: 124,
+                    ),
                     const Expanded(
                       child: Column(
                         children: [
