@@ -211,10 +211,10 @@
                                                 <action selector="toggleAutomaticQuoteSubstitution:" target="-1" id="ptq-xd-QOA"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Smart Dashes" id="rgM-f4-ycn">
+                                        <menuItem title="Smart Planeaes" id="rgM-f4-ycn">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="toggleAutomaticDashSubstitution:" target="-1" id="oCt-pO-9gS"/>
+                                                <action selector="toggleAutomaticPlaneaSubstitution:" target="-1" id="oCt-pO-9gS"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Smart Links" id="cwL-P1-jid">

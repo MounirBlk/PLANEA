@@ -1,12 +1,76 @@
+// ignore_for_file: unnecessary_import, unused_import
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:planea/audio_helper.dart';
+import 'package:planea/domain/repositories/game_repository.dart';
+import 'package:planea/presentation/app_routes.dart';
+import 'package:planea/presentation/app_style.dart';
+import 'package:planea/presentation/bloc/bloc_registry.dart';
+import 'package:planea/presentation/bloc/singleplayer/singleplayer_game_cubit.dart';
+import 'package:planea/presentation/pages/debug/debug_panel.dart';
 import 'dart:math' as math;
+import 'package:planea/presentation/pages/home/home.dart';
+import 'package:planea/presentation/pages/splash/splash_pages.dart';
+import 'package:planea/service_locator.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
-  runApp(GameWidget(game: FlameGame(world: MyWorld())));
+main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  //await dotenv.load(fileName: ".env");
+  await setupServiceLocator();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => const MyGameApp(),
+    ),
+  );
+  //runApp(const MyGameApp());
+}
+
+class MyGameApp extends StatelessWidget {
+  const MyGameApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBlocRegistry(
+      child: MaterialApp.router(
+        routerConfig: AppRoutes.router,
+        title: 'Planea',
+        builder: (context, child) {
+          return Stack(
+            children: [
+              DevicePreview.appBuilder(context, child),
+              const Align(alignment: Alignment.bottomLeft, child: DebugPanel()),
+            ],
+          );
+        },
+        theme: ThemeData(
+          fontFamily: 'Chewy',
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.blueColor),
+        ),
+      ), // MODE ROUTER
+      /*MaterialApp(
+        title: 'Planea',
+        builder: DevicePreview.appBuilder,
+        theme: ThemeData(
+          fontFamily: 'Chewy',
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.blueColor),
+        ),
+        home: const SplashPage(),
+      ),*/
+    );
+  }
 }
 
 class MyWorld extends World with TapCallbacks {
