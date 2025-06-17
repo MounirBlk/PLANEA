@@ -1,8 +1,12 @@
 import 'package:flame/game.dart';
-import 'package:planea/presentation/bloc/game/game_cubit.dart';
-import 'package:planea/presentation/bloc/game/game_state.dart';
-import 'package:planea/presentation/dialogs/app_dialogs.dart';
+import 'package:planea/domain/entities/game_mode.dart';
+import 'package:planea/domain/entities/playing_state.dart';
+import 'package:planea/presentation/bloc/leaderboard/leaderboard_cubit.dart';
+import 'package:planea/presentation/bloc/multiplayer/multiplayer_cubit.dart';
+import 'package:planea/presentation/bloc/singleplayer/singleplayer_game_cubit.dart';
 import 'package:planea/presentation/app_style.dart';
+import 'package:planea/presentation/bloc/singleplayer/singleplayer_game_state.dart';
+import 'package:planea/presentation/dialogs/leaderboard_dialog.dart';
 import 'package:planea/presentation/planea_game.dart';
 import 'package:planea/presentation/widget/best_score_overlay.dart';
 import 'package:planea/presentation/widget/game_back_button.dart';
@@ -22,26 +26,39 @@ class SinglePlayerGamePage extends StatefulWidget {
 
 class _SinglePlayerGamePageState extends State<SinglePlayerGamePage> {
   late PlaneaGame _planeaGame;
-
-  late GameCubit gameCubit;
+  late SingleplayerGameCubit gameCubit;
+  late MultiplayerCubit multiplayerCubit;
+  late LeaderboardCubit leaderboardCubit;
 
   PlayingState? _latestState;
 
   @override
   void initState() {
-    gameCubit = BlocProvider.of<GameCubit>(context);
-    _planeaGame = PlaneaGame(gameCubit);
+    gameCubit = BlocProvider.of<SingleplayerGameCubit>(context);
+    multiplayerCubit = BlocProvider.of<MultiplayerCubit>(context);
+    leaderboardCubit = BlocProvider.of<LeaderboardCubit>(context);
+    _planeaGame = PlaneaGame(
+      const SinglePlayerGameMode(),
+      gameCubit,
+      multiplayerCubit,
+      leaderboardCubit,
+    );
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<GameCubit, GameState>(
+    return BlocConsumer<SingleplayerGameCubit, SingleplayerGameState>(
       listener: (context, state) {
         if (state.currentPlayingState.isIdle &&
             _latestState == PlayingState.gameOver) {
           setState(() {
-            _planeaGame = PlaneaGame(gameCubit);
+            _planeaGame = PlaneaGame(
+              const SinglePlayerGameMode(),
+              gameCubit,
+              multiplayerCubit,
+              leaderboardCubit,
+            );
           });
         }
 
@@ -61,8 +78,8 @@ class _SinglePlayerGamePageState extends State<SinglePlayerGamePage> {
               if (state.currentPlayingState.isGameOver) const GameOverWidget(),
               if (state.currentPlayingState.isIdle)
                 const Align(alignment: Alignment(0, 0.2), child: TapToPlay()),
-              if (!state.currentPlayingState.isGameOver)
-                const SafeArea(child: TopScore()),
+              if (state.currentPlayingState.isNotGameOver)
+                SafeArea(child: TopScore(currentScore: state.currentScore)),
               Align(
                 alignment: Alignment.topCenter,
                 child: SafeArea(
@@ -84,8 +101,7 @@ class _SinglePlayerGamePageState extends State<SinglePlayerGamePage> {
                               const ProfileOverlay(),
                               const SizedBox(height: 8),
                               BestScoreOverlay(
-                                onTap: () =>
-                                    AppDialogs.showLeaderboard(context),
+                                onTap: () => LeaderBoardDialog.show(context),
                               ),
                             ],
                           ),
@@ -100,5 +116,11 @@ class _SinglePlayerGamePageState extends State<SinglePlayerGamePage> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    gameCubit.stopPlaying();
+    super.dispose();
   }
 }

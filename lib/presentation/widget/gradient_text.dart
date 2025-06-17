@@ -1,5 +1,5 @@
-import 'package:planea/presentation/widget/outline_text.dart';
 import 'package:flutter/material.dart';
+import 'package:planea/presentation/widget/outline_text.dart';
 
 class GradientText extends StatelessWidget {
   const GradientText(

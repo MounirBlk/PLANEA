@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_soloud/flutter_soloud.dart';
 
 class AudioHelper {
@@ -7,14 +8,17 @@ class AudioHelper {
 
   late AudioSource _scoreSource;
 
+  bool get isPlayingBackgroundAudio => _playingBackground != null;
+
   Future<void> initialize() async {
     _soLoud = SoLoud.instance;
-    if (_soLoud.isInitialized) {
-      return;
-    }
     await _soLoud.init();
     _backgroundSource = await _soLoud.loadAsset('assets/audio/background.mp3');
     _scoreSource = await _soLoud.loadAsset('assets/audio/score.mp3');
+
+    if (kDebugMode) {
+      _soLoud.setGlobalVolume(0.0);
+    }
   }
 
   void playBackgroundAudio() async {
@@ -22,15 +26,14 @@ class AudioHelper {
     _soLoud.setProtectVoice(_playingBackground!, true);
   }
 
-  void stopBackgroundAudio() {
+  void stopBackgroundAudio({bool immediately = false}) {
     if (_playingBackground == null) {
       return;
     }
-
     _soLoud.fadeVolume(
       _playingBackground!,
       0.0,
-      const Duration(milliseconds: 500),
+      Duration(milliseconds: immediately ? 0 : 500),
     );
   }
 

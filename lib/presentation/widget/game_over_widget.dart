@@ -1,16 +1,15 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:planea/presentation/bloc/game/game_cubit.dart';
-import 'package:planea/presentation/bloc/game/game_state.dart';
+import 'package:planea/presentation/bloc/singleplayer/singleplayer_game_cubit.dart';
+import 'package:planea/presentation/bloc/singleplayer/singleplayer_game_state.dart';
 
 class GameOverWidget extends StatelessWidget {
   const GameOverWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GameCubit, GameState>(
+    return BlocBuilder<SingleplayerGameCubit, SingleplayerGameState>(
       builder: (context, state) {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
@@ -21,7 +20,7 @@ class GameOverWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Text(
-                    'GAME OVER!',
+                    'Perdu !',
                     style: TextStyle(
                       color: Color(0xFFFFCA00),
                       fontWeight: FontWeight.bold,
@@ -32,20 +31,21 @@ class GameOverWidget extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     'Score: ${state.currentScore}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
                       fontSize: 22,
                       letterSpacing: 2,
                     ),
                   ),
                   const SizedBox(height: 60),
                   ElevatedButton(
-                    onPressed: () => context.read<GameCubit>().restartGame(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const Text(
-                        'PLAY AGAIN!',
+                    onPressed: () {
+                      context.read<SingleplayerGameCubit>().restartGame();
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Rejouer !',
                         style: TextStyle(fontSize: 22, letterSpacing: 2),
                       ),
                     ),

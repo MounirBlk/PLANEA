@@ -1,10 +1,13 @@
 import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:planea/domain/entities/planea_type.dart';
 
 class AppColors {
   static const backgroundColor = Color(0xFF0F8B8D);
   static const backgroundColor60 = Color(0x800F8B8D);
 
   static const boxBgColor = Color(0x66000000);
+  static const blackOverlay = Color(0xCC000000);
   static const dialogBgColor = Color(0xFF16425B);
   static const mainColor = Color(0xFF00FBFF);
   static const blueColor = Color(0xFF26CBFE);
@@ -27,12 +30,27 @@ class AppColors {
   static const greenButtonStrokeColor = Color(0xFF052727);
   static const playerBoxStrokeColor = Color(0x8016425B);
 
+  static const multiplayerScoreboardBgColor = Color(0x99000000);
+
   static const multiColorGradient = [
     Color(0xFFFF25B2),
     Color(0xFFFF5D27),
     Color(0xFFAE0089),
     Color(0xFF0073FF),
   ];
+
+  static Color getPlaneaColor(PlaneaType type) => switch (type) {
+    PlaneaType.flutterPlanea => const Color(0xFF2AC6FD),
+    PlaneaType.limePlanea => const Color(0xFFD0FF6F),
+    PlaneaType.peachyPlanea => const Color(0xFFFDBDB3),
+    PlaneaType.rosePlanea => const Color(0xFFFDABE3),
+    PlaneaType.sandPlanea => const Color(0xFFFDCA7B),
+    PlaneaType.scarletPlanea => const Color(0xFFFF635A),
+    PlaneaType.skyPlanea => const Color(0xFFA3EAFF),
+    PlaneaType.mintyPlanea => const Color(0xFF5EF9A5),
+    PlaneaType.sunnyPlanea => const Color(0xFFFFE247),
+    PlaneaType.violetPlanea => const Color(0xFFBEA2FD),
+  };
 }
 
 class PresentationConstants {

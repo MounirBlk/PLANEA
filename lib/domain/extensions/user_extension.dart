@@ -1,3 +1,4 @@
+import 'package:planea/domain/entities/planea_type.dart';
 import 'package:planea/domain/extensions/string_extension.dart';
 import 'package:nakama/nakama.dart';
 
@@ -6,11 +7,6 @@ extension UserExtensions on User {
     if (displayName.isNotNullOrBlank) {
       return displayName!;
     }
-
-    if (username.isNotNullOrBlank) {
-      return username!;
-    }
-
-    throw StateError('User must have username!');
+    return PlaneaType.fromUserId(id).name;
   }
 }

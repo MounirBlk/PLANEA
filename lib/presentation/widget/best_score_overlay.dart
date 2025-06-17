@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planea/presentation/app_style.dart';
-import 'package:planea/presentation/bloc/game/game_cubit.dart';
-import 'package:planea/presentation/bloc/game/game_state.dart';
-import 'package:planea/presentation/dialogs/leaderboard_dialog.dart';
+import 'package:planea/presentation/bloc/leaderboard/leaderboard_cubit.dart';
+import 'package:planea/presentation/bloc/leaderboard/leaderboard_state.dart';
+import 'package:planea/presentation/dialogs/raw_scores_list_dialog.dart';
 import 'package:planea/presentation/responsive/screen_size.dart';
-
 import 'box_overlay.dart';
 
 class BestScoreOverlay extends StatelessWidget {
@@ -25,7 +24,7 @@ class BestScoreOverlay extends StatelessWidget {
     };
     double relative(double value) => value * multiplier;
 
-    return BlocBuilder<GameCubit, GameState>(
+    return BlocBuilder<LeaderboardCubit, LeaderboardState>(
       builder: (context, state) {
         final record = state.leaderboardEntity?.ownerRecord;
         int? rank = int.tryParse(record?.rank ?? '');
@@ -48,7 +47,7 @@ class BestScoreOverlay extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Score',
+                    'Meilleur score',
                     style: TextStyle(
                       color: AppColors.whiteTextColor,
                       fontSize: relative(16),

@@ -1,9 +1,16 @@
-import 'package:planea/presentation/responsive/screen_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:planea/presentation/responsive/screen_size.dart';
 
 class GameBackButton extends StatelessWidget {
-  const GameBackButton({super.key});
+  const GameBackButton({
+    super.key,
+    this.svgIcon = 'ic_back.svg',
+    this.overrideOnPressed,
+  });
+
+  final String svgIcon;
+  final VoidCallback? overrideOnPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +25,12 @@ class GameBackButton extends StatelessWidget {
       padding: EdgeInsets.only(left: backIconSize * 0.4),
       child: IconButton(
         padding: EdgeInsets.all(backIconSize * 0.5),
-        icon: SvgPicture.asset('assets/icons/ic_back.svg', width: backIconSize),
-        onPressed: () => Navigator.of(context).pop(),
+        icon: SvgPicture.asset(
+          'assets/icons/$svgIcon',
+          width: backIconSize,
+          height: backIconSize,
+        ),
+        onPressed: overrideOnPressed ?? () => Navigator.of(context).pop(),
       ),
     );
   }

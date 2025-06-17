@@ -1,0 +1,17 @@
+import 'package:planea/data/local/settings_date_source.dart';
+import 'package:planea/data/remote/nakama_data_source.dart';
+
+class SettingsRepository {
+  SettingsRepository(this._settingsDataSource, this._nakamaDataSource);
+
+  final SettingsDataSource _settingsDataSource;
+  final NakamaDataSource _nakamaDataSource;
+
+  Future<(String, int)> getAppVersion() => _settingsDataSource.getAppVersion();
+
+  Future<bool> isVersionUpToDate() async {
+    final config = await _nakamaDataSource.getServerConfig();
+    final (_, versionCode) = await getAppVersion();
+    return versionCode >= config.minimumAppVersion;
+  }
+}

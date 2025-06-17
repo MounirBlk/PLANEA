@@ -30,6 +30,9 @@ class LeaderboardEntity with EquatableMixin {
   LeaderboardEntity(this._recordList, this._userProfiles, this._currentUserId)
     : assert(_recordList.records!.length == _userProfiles.length);
 
+  List<T> map<T>(T Function(LeaderboardRecord record, String name) f) =>
+      List.generate(length, (index) => f(this[index].$1, this[index].$2));
+
   @override
   List<Object?> get props => [_recordList, _userProfiles, _currentUserId];
 }

@@ -12,9 +12,11 @@ import 'package:planea/audio_helper.dart';
 import 'package:planea/domain/repositories/game_repository.dart';
 import 'package:planea/presentation/app_routes.dart';
 import 'package:planea/presentation/app_style.dart';
-import 'package:planea/presentation/bloc/game/game_cubit.dart';
+import 'package:planea/presentation/bloc/bloc_registry.dart';
+import 'package:planea/presentation/bloc/singleplayer/singleplayer_game_cubit.dart';
+import 'package:planea/presentation/pages/debug/debug_panel.dart';
 import 'dart:math' as math;
-import 'package:planea/presentation/pages/game/game.dart';
+import 'package:planea/presentation/pages/home/home.dart';
 import 'package:planea/presentation/pages/splash/splash_pages.dart';
 import 'package:planea/service_locator.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -41,14 +43,18 @@ class MyGameApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) =>
-          GameCubit(getIt.get<AudioHelper>(), getIt.get<GameRepository>()),
-      lazy: false,
+    return AppBlocRegistry(
       child: MaterialApp.router(
         routerConfig: AppRoutes.router,
         title: 'Planea',
-        builder: DevicePreview.appBuilder,
+        builder: (context, child) {
+          return Stack(
+            children: [
+              DevicePreview.appBuilder(context, child),
+              const Align(alignment: Alignment.bottomLeft, child: DebugPanel()),
+            ],
+          );
+        },
         theme: ThemeData(
           fontFamily: 'Chewy',
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.blueColor),

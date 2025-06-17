@@ -1,9 +1,18 @@
+import 'package:planea/domain/extensions/user_extension.dart';
+import 'package:planea/presentation/bloc/account/account_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:planea/domain/extensions/user_extension.dart';
-import 'package:planea/presentation/bloc/game/game_cubit.dart';
 
 class NicknameDialog extends StatefulWidget {
+  static Future<String?> show(BuildContext context) {
+    return showDialog<String?>(
+      context: context,
+      builder: (context) {
+        return const NicknameDialog();
+      },
+    );
+  }
+
   const NicknameDialog({super.key});
 
   @override
@@ -16,9 +25,9 @@ class _NicknameDialogState extends State<NicknameDialog> {
   @override
   void initState() {
     final name = context
-        .read<GameCubit>()
+        .read<AccountCubit>()
         .state
-        .currentUserAccount
+        .currentAccount
         ?.user
         .showingName;
     _textEditingController = TextEditingController(text: name);
@@ -41,7 +50,7 @@ class _NicknameDialogState extends State<NicknameDialog> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text(
-                'Pseudo',
+                'Votre pseudo',
                 style: TextStyle(fontFamily: 'Roboto', fontSize: 28),
               ),
               const SizedBox(height: 24),
@@ -54,7 +63,7 @@ class _NicknameDialogState extends State<NicknameDialog> {
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black, width: 1.0),
                   ),
-                  hintText: 'Ecris ton pseudo',
+                  hintText: 'Pseudo',
                 ),
                 maxLength: 12,
               ),
@@ -74,10 +83,10 @@ class _NicknameDialogState extends State<NicknameDialog> {
   }
 
   void _onSaveClicked() {
-    final gameCubit = context.read<GameCubit>();
+    final accountCubit = context.read<AccountCubit>();
     final newName = _textEditingController.text;
-    gameCubit.updateUserDisplayName(newName);
-    Navigator.of(context).pop();
+    accountCubit.updateUserDisplayName(newName);
+    Navigator.of(context).pop(newName);
   }
 
   @override

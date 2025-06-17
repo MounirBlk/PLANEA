@@ -1,31 +1,53 @@
-// ignore_for_file: unused_import
-
 import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flame_bloc/flame_bloc.dart';
+import 'package:planea/domain/entities/game_mode.dart';
+import 'package:planea/domain/entities/playing_state.dart';
+import 'package:planea/presentation/bloc/leaderboard/leaderboard_cubit.dart';
+import 'package:planea/presentation/bloc/multiplayer/multiplayer_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:planea/audio_helper.dart';
-import 'package:planea/presentation/bloc/game/game_cubit.dart';
-import 'package:planea/presentation/bloc/game/game_state.dart';
-import 'package:planea/presentation/components/pipe_pair.dart';
-import 'package:planea/presentation/components/planea.dart';
 import 'package:planea/presentation/components/planea_parallax_background.dart';
 import 'package:planea/presentation/components/planea_root_component.dart';
-import 'package:planea/service_locator.dart';
+
+import 'bloc/singleplayer/singleplayer_game_cubit.dart';
 
 class PlaneaGame extends FlameGame<PlaneaWorld>
     with KeyboardEvents, HasCollisionDetection {
-  PlaneaGame(this.gameCubit)
-    : super(
+  PlaneaGame(
+    this.gameMode,
+    this.singleplayerCubit,
+    this.multiplayerCubit,
+    this.leaderboardCubit,
+  ) : super(
         world: PlaneaWorld(),
         camera: CameraComponent.withFixedResolution(width: 600, height: 1000),
       );
 
-  final GameCubit gameCubit;
+  final Random random = Random();
+  final GameMode gameMode;
+  final SingleplayerGameCubit singleplayerCubit;
+  final MultiplayerCubit multiplayerCubit;
+  final LeaderboardCubit leaderboardCubit;
+
+  PlayingState getCurrentPlayingState({String? otherPlayerId}) =>
+      switch (gameMode) {
+        SinglePlayerGameMode() => singleplayerCubit.state.currentPlayingState,
+        MultiplayerGameMode() =>
+          otherPlayerId != null
+              ? multiplayerCubit
+                    .state
+                    .matchState!
+                    .players[otherPlayerId]!
+                    .playingState
+              : multiplayerCubit.state.currentPlayingState,
+      };
+
+  double get worldWidth =>
+      gameMode.gameConfig.pipesDistance *
+      multiplayerCubit.state.matchState!.pipesPositions.length;
 
   @override
   KeyEventResult onKeyEvent(
@@ -33,7 +55,9 @@ class PlaneaGame extends FlameGame<PlaneaWorld>
     Set<LogicalKeyboardKey> keysPressed,
   ) {
     final isKeyDown = event is KeyDownEvent;
+
     final isSpace = keysPressed.contains(LogicalKeyboardKey.space);
+
     if (isSpace && isKeyDown) {
       world.onSpaceDown();
       return KeyEventResult.handled;
@@ -41,60 +65,76 @@ class PlaneaGame extends FlameGame<PlaneaWorld>
     return KeyEventResult.ignored;
   }
 
+  void gameOver(double x, double y, double velocityY) async {
+    switch (gameMode) {
+      case SinglePlayerGameMode():
+        await singleplayerCubit.gameOver();
+        leaderboardCubit.refreshLeaderboard();
+        break;
+      case MultiplayerGameMode():
+        multiplayerCubit.playerDied(x, y, velocityY);
+        break;
+    }
+  }
+
+  void increaseScore(double x, double y, double velocityY) {
+    switch (gameMode) {
+      case SinglePlayerGameMode():
+        singleplayerCubit.increaseScore();
+        break;
+      case MultiplayerGameMode():
+        multiplayerCubit.increaseScore(x, y, velocityY);
+        break;
+    }
+  }
+
+  void onGameStarted() {
+    switch (gameMode) {
+      case SinglePlayerGameMode():
+        singleplayerCubit.startPlaying();
+        break;
+      case MultiplayerGameMode():
+        multiplayerCubit.startPlaying();
+        break;
+    }
+  }
+
+  void playerJumped(double x, double y, double velocityY) {
+    switch (gameMode) {
+      case SinglePlayerGameMode():
+        // Does nothing
+        break;
+      case MultiplayerGameMode():
+        multiplayerCubit.dispatchJumpEvent(x, y, velocityY);
+        break;
+    }
+  }
+
   @override
   void onRemove() {
-    // Clean up resources or save state if necessary
-    // This is called when the game is removed from the widget tree
-    // For example, you might want to save the game state or dispose of resources
+    removeAll(children);
+    processLifecycleEvents();
     super.onRemove();
   }
 
-  @override
-  void onGameResize(Vector2 size) {
-    // Adjust camera or other components based on the new size if needed
-    super.onGameResize(size);
-  }
-
-  @override
-  Future<void> onLoad() async {
-    // Load initial game components here
-    // For example, you can add a background or initial entities
-    await super.onLoad();
-    debugMode = false; // Enable debug mode for visual debugging
-  }
-
-  @override
-  void onMount() {
-    // implement onMount
-    super.onMount();
-  }
-
-  @override
-  void update(double dt) {
-    // Update game logic here
-    super.update(dt);
-  }
-
-  @override
-  void render(Canvas canvas) {
-    // Render game components here
-    super.render(canvas);
+  void onGameFinished() {
+    removeAll(children);
+    removeFromParent();
+    processLifecycleEvents();
   }
 }
 
 class PlaneaWorld extends World
     with TapCallbacks, HasGameReference<PlaneaGame> {
   late PlaneaRootComponent _rootComponent;
+
+  PlaneaRootComponent get rootComponent => _rootComponent;
+
   @override
   Future<void> onLoad() async {
-    await super.onLoad();
-    await getIt.get<AudioHelper>().initialize();
-    add(
-      FlameBlocProvider<GameCubit, GameState>(
-        create: () => game.gameCubit,
-        children: [_rootComponent = PlaneaRootComponent()],
-      ),
-    );
+    super.onLoad();
+    add(_rootComponent = PlaneaRootComponent());
+    game.camera.backdrop = PlaneaParallaxBackground();
   }
 
   void onSpaceDown() => _rootComponent.onSpaceDown();

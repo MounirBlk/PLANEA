@@ -1,16 +1,12 @@
 import 'package:flame/components.dart';
 import 'package:flame/parallax.dart';
-import 'package:flame_bloc/flame_bloc.dart';
-import 'package:planea/presentation/bloc/game/game_cubit.dart';
-import 'package:planea/presentation/bloc/game/game_state.dart';
+import 'package:planea/domain/entities/playing_state.dart';
 import 'package:planea/presentation/planea_game.dart';
 
-class PlaneaParallaxBackground extends ParallaxComponent<PlaneaGame>
-    with FlameBlocReader<GameCubit, GameState> {
+class PlaneaParallaxBackground extends ParallaxComponent<PlaneaGame> {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    anchor = Anchor.center;
     parallax = await game.loadParallax(
       [
         ParallaxImageData('background/layer1-sky.png'),
@@ -28,7 +24,7 @@ class PlaneaParallaxBackground extends ParallaxComponent<PlaneaGame>
 
   @override
   void update(double dt) {
-    switch (bloc.state.currentPlayingState) {
+    switch (game.getCurrentPlayingState()) {
       case PlayingState.idle:
       case PlayingState.playing:
         super.update(dt);

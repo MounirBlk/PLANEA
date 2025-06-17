@@ -1,33 +1,25 @@
-// ignore_for_file: unused_import
-import 'package:go_router/go_router.dart';
-import 'package:planea/domain/repositories/game_repository.dart';
-import 'package:planea/presentation/pages/game/game.dart';
+import 'package:planea/presentation/extensions/build_context_extension.dart';
 import 'package:planea/presentation/pages/splash/cubit/splash_state.dart';
-import 'package:planea/service_locator.dart';
+import 'package:planea/presentation/widget/app_version_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'cubit/splash_cubit.dart';
+import 'package:planea/presentation/helpers/update_helper/io_update_helper.dart'
+    if (dart.library.js) 'package:planea/presentation/helpers/update_helper/web_update_helper.dart'
+    if (dart.library.html) 'package:planea/presentation/helpers/update_helper/web_update_helper.dart';
 
-class SplashPage extends StatelessWidget {
-  const SplashPage({super.key});
+class SplashPage extends StatefulWidget {
+  const SplashPage({super.key, this.redirectTo});
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => SplashCubit(getIt.get<GameRepository>()),
-      child: const SplashPageContent(),
-    );
-  }
-}
-
-class SplashPageContent extends StatefulWidget {
-  const SplashPageContent({super.key});
+  final String? redirectTo;
 
   @override
-  State<SplashPageContent> createState() => _SplashPageContentState();
+  State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageContentState extends State<SplashPageContent> {
+class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     context.read<SplashCubit>().onPageOpen();
@@ -38,43 +30,61 @@ class _SplashPageContentState extends State<SplashPageContent> {
   Widget build(BuildContext context) {
     return BlocConsumer<SplashCubit, SplashState>(
       listener: (context, state) {
-        if (state.openHomePage) {
-          /*Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const GamePage()),
-          );*/
-          GoRouter.of(context).replace('/');
+        if (state.openTheNextPage) {
+          if (widget.redirectTo != null) {
+            GoRouter.of(context).replace(widget.redirectTo!);
+          } else {
+            GoRouter.of(context).replace('/');
+          }
+        }
+
+        if (!kDebugMode && state.initializationError.isNotEmpty) {
+          context.showToastError(state.initializationError);
+        }
+
+        if (state.versionIsOutdated) {
+          _handleOutdatedVersion(context);
         }
       },
       builder: (context, state) {
         return Scaffold(
-          body: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Expanded(child: Container()),
-                Image.asset(
-                  'assets/images/planea.png',
-                  width: 124,
-                  height: 124,
-                ),
-                const Expanded(
-                  child: Column(
-                    children: [
-                      Text(
-                        'Planea',
-                        style: TextStyle(
-                          fontSize: 28,
-                          color: Color(0xFF25165F),
-                        ),
+          body: Stack(
+            children: [
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(child: Container()),
+                    if (kDebugMode) Text(state.initializationError),
+                    Image.asset('assets/images/.png', width: 124, height: 124),
+                    const Expanded(
+                      child: Column(
+                        children: [
+                          Text(
+                            'Planea',
+                            style: TextStyle(
+                              fontSize: 28,
+                              color: Color(0xFF25165F),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              const Align(
+                alignment: Alignment.bottomRight,
+                child: AppVersionWidget(),
+              ),
+            ],
           ),
         );
       },
     );
+  }
+
+  void _handleOutdatedVersion(BuildContext context) async {
+    await AppUpdateHelper.handleUpdateRequired(context);
   }
 }

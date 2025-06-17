@@ -47,6 +47,11 @@ class GameRepository {
     return _nakamaDataSource.getAccount();
   }
 
+  Stream<Account> getUserAccountUpdateStream() async* {
+    await _initializationCompleter.future;
+    yield* _nakamaDataSource.getAccountUpdateStream();
+  }
+
   Future<void> submitScore(int score) async {
     await _initializationCompleter.future;
     if (score == 0) {

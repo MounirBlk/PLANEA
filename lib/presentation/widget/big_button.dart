@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:planea/presentation/app_style.dart';
 import 'package:planea/presentation/responsive/screen_size.dart';
-import 'package:flutter/material.dart';
 
 class BigButton extends StatelessWidget {
   const BigButton({
@@ -21,6 +21,7 @@ class BigButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = ScreenSize.fromContext(context);
+    final disabled = onPressed == null;
     return SizedBox(
       width: switch (screenSize) {
         ScreenSize.extraSmall => 280,
@@ -40,7 +41,11 @@ class BigButton extends StatelessWidget {
                   PresentationConstants.defaultBorderRadius,
                 ),
               ),
-              side: BorderSide(color: strokeColor, width: 2.5),
+              side: BorderSide(
+                color: disabled ? strokeColor.withOpacity(0.3) : strokeColor,
+                width: 2.5,
+              ),
+              disabledBackgroundColor: bgColor.withOpacity(0.3),
               backgroundColor: bgColor,
             ),
             child: child,

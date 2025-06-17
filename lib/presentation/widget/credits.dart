@@ -36,7 +36,7 @@ class CreditsWidget extends StatelessWidget {
               },
             ),
             Text(
-              'Planea bird !',
+              'Planea game !',
               style: TextStyle(
                 fontSize: switch (screenSize) {
                   ScreenSize.extraSmall => 18,

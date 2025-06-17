@@ -1,16 +1,40 @@
 import 'package:equatable/equatable.dart';
 
 class SplashState with EquatableMixin {
-  const SplashState({this.isLoading = false, this.openHomePage = false});
+  const SplashState({
+    this.isLoading = false,
+    this.openTheNextPage = false,
+    this.isSplashInitialized = false,
+    this.initializationError = '',
+    this.versionIsOutdated = false,
+  });
 
   final bool isLoading;
-  final bool openHomePage;
+  final bool openTheNextPage;
+  final bool isSplashInitialized;
+  final String initializationError;
+  final bool versionIsOutdated;
 
-  SplashState copyWith({bool? isLoading, bool? openHomePage}) => SplashState(
+  SplashState copyWith({
+    bool? isLoading,
+    bool? openTheNextPage,
+    bool? isSplashInitialized,
+    String? initializationError,
+    bool? versionIsOutdated,
+  }) => SplashState(
     isLoading: isLoading ?? this.isLoading,
-    openHomePage: openHomePage ?? this.openHomePage,
+    openTheNextPage: openTheNextPage ?? this.openTheNextPage,
+    isSplashInitialized: isSplashInitialized ?? this.isSplashInitialized,
+    initializationError: initializationError ?? this.initializationError,
+    versionIsOutdated: versionIsOutdated ?? this.versionIsOutdated,
   );
 
   @override
-  List<Object> get props => [isLoading, openHomePage];
+  List<Object> get props => [
+    isLoading,
+    openTheNextPage,
+    isSplashInitialized,
+    initializationError,
+    versionIsOutdated,
+  ];
 }
