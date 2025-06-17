@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'dart:async';
 import 'package:planea/domain/entities/match_event.dart';
 import 'package:planea/presentation/app_style.dart';
