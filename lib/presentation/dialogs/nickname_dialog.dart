@@ -65,7 +65,7 @@ class _NicknameDialogState extends State<NicknameDialog> {
                   ),
                   hintText: 'Pseudo',
                 ),
-                maxLength: 12,
+                maxLength: 14,
               ),
               const SizedBox(height: 16),
               SizedBox(
