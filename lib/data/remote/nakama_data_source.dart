@@ -14,6 +14,7 @@ import 'package:nakama/nakama.dart';
 import 'match_event_op_code.dart';
 
 class NakamaDataSource {
+  static const ssl = true; // !kDebugMode,
   static final _host = const String.fromEnvironment(
     'NAKAMA_HOST',
     defaultValue: '127.0.0.1',
@@ -26,7 +27,7 @@ class NakamaDataSource {
   );
   final client = getNakamaClient(
     host: _host,
-    ssl: true, // !kDebugMode,
+    ssl: ssl, // !kDebugMode,
     serverKey: const String.fromEnvironment(
       'NAKAMA_SERVER_KEY',
       defaultValue: 'defaultkey',
@@ -43,7 +44,7 @@ class NakamaDataSource {
   NakamaWebsocketClient _initWebsocketClient(String token) =>
       NakamaWebsocketClient.init(
         host: _host,
-        ssl: true, // !kDebugMode,
+        ssl: ssl, // !kDebugMode,
         port: _httpPort,
         token: token,
         onError: (error) {
