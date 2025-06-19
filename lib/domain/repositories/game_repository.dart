@@ -28,13 +28,32 @@ class GameRepository {
   Future<LeaderboardEntity> getLeaderboard() async {
     await _initializationCompleter.future;
     final recordList = await _nakamaDataSource.getLeaderboard(_mainLeaderboard);
-    final ids = recordList.records!.map((record) => record.ownerId!).toList();
+    final ids =
+        recordList.records
+            ?.where((record) => record.ownerId != null)
+            .map((record) => record.ownerId!)
+            .toList() ??
+        [];
     final users = await _nakamaDataSource.getUsers(ids);
     final usersMap = Map.fromEntries(
       users.map((user) => MapEntry(user.id, user)),
     );
     final currentUserId = await getCurrentUserId();
-    return LeaderboardEntity(recordList, usersMap, currentUserId);
+    if (recordList.records != null) {
+      return LeaderboardEntity(recordList, usersMap, currentUserId);
+    } else {
+      return LeaderboardEntity(
+        LeaderboardRecordList(
+          records: [],
+          ownerRecords: null,
+          nextCursor: null,
+          prevCursor: null,
+        ),
+        usersMap,
+        currentUserId,
+      );
+    }
+    //return LeaderboardEntity(recordList, usersMap, currentUserId);
   }
 
   Future<String> getCurrentUserId() async {
