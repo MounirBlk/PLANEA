@@ -43,12 +43,7 @@ class GameRepository {
       return LeaderboardEntity(recordList, usersMap, currentUserId);
     } else {
       return LeaderboardEntity(
-        LeaderboardRecordList(
-          records: [],
-          ownerRecords: null,
-          nextCursor: null,
-          prevCursor: null,
-        ),
+        LeaderboardRecordList(records: [], ownerRecords: []),
         usersMap,
         currentUserId,
       );
