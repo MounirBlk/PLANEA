@@ -1,4 +1,4 @@
-import 'package:planea/data/local/settings_date_source.dart';
+import 'package:planea/data/local/settings_data_source.dart';
 import 'package:planea/data/remote/nakama_data_source.dart';
 
 class SettingsRepository {

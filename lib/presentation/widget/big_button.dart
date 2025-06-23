@@ -42,10 +42,12 @@ class BigButton extends StatelessWidget {
                 ),
               ),
               side: BorderSide(
-                color: disabled ? strokeColor.withOpacity(0.3) : strokeColor,
+                color: disabled
+                    ? strokeColor.withAlpha((0.3 * 255).toInt())
+                    : strokeColor,
                 width: 2.5,
               ),
-              disabledBackgroundColor: bgColor.withOpacity(0.3),
+              disabledBackgroundColor: bgColor.withAlpha((0.3 * 255).toInt()),
               backgroundColor: bgColor,
             ),
             child: child,

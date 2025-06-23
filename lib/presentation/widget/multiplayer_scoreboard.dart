@@ -292,9 +292,9 @@ class _MultiplayerScoreRowWidget extends StatelessWidget {
       planeaWidth: 8,
       planeaGap: 8,
       strokeWidth: !score.isMe ? 0 : 1,
-      borderColor: planeaColor.withOpacity(0.7),
+      borderColor: planeaColor.withAlpha((0.7 * 255).toInt()),
       backgroundColor: score.isMe
-          ? Colors.black.withOpacity(0.13)
+          ? Colors.black.withAlpha((0.13 * 255).toInt())
           : Colors.transparent,
       child: SizedBox(
         height: height,

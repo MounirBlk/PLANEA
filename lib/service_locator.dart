@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:planea/audio_helper.dart';
-import 'package:planea/data/local/settings_date_source.dart';
+import 'package:planea/data/local/settings_data_source.dart';
 import 'package:planea/domain/repositories/multiplayer_repository.dart';
 
 import 'data/local/device_data_source.dart';
