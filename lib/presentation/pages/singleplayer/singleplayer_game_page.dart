@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:planea/domain/entities/game_mode.dart';
+import 'package:planea/domain/entities/planea_type.dart';
 import 'package:planea/domain/entities/playing_state.dart';
 import 'package:planea/presentation/bloc/leaderboard/leaderboard_cubit.dart';
 import 'package:planea/presentation/bloc/multiplayer/multiplayer_cubit.dart';
@@ -31,6 +32,11 @@ class _SinglePlayerGamePageState extends State<SinglePlayerGamePage> {
   late LeaderboardCubit leaderboardCubit;
 
   PlayingState? _latestState;
+
+  PlaneaType get planeaType {
+    final userId = multiplayerCubit.state.currentUserId;
+    return PlaneaType.fromUserId(userId);
+  }
 
   @override
   void initState() {
@@ -72,7 +78,9 @@ class _SinglePlayerGamePageState extends State<SinglePlayerGamePage> {
               GameWidget(
                 game: _planeaGame,
                 backgroundBuilder: (_) {
-                  return Container(color: AppColors.backgroundColor);
+                  return Container(
+                    color: AppColors.getPlaneaColor(planeaType),
+                  ); // AppColors.backgroundColor;
                 },
               ),
               if (state.currentPlayingState.isGameOver) const GameOverWidget(),

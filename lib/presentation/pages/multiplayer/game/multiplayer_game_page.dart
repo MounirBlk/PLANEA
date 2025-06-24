@@ -76,7 +76,9 @@ class _MultiPlayerGamePageState extends State<MultiPlayerGamePage> {
                   GameWidget(
                     game: _planeaGame!,
                     backgroundBuilder: (_) {
-                      return Container(color: AppColors.backgroundColor);
+                      return Container(
+                        color: AppColors.getPlaneaColor(planeaType),
+                      ); // AppColors.backgroundColor
                     },
                   ),
                 if (state.currentPlayingState.isGameOver)

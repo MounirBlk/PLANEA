@@ -98,6 +98,12 @@ flutter:
     - assets/images/trophies/
     - assets/audio/
     - assets/icons/
+    - assets/images/background/clouds/
+    - assets/images/background/clouds/clouds_background1_1/
+    - assets/images/background/clouds/clouds_background1_2/
+    - assets/images/background/clouds/clouds_background2_3/
+    - assets/images/background/clouds/clouds_background2_2/
+    - assets/images/background/clouds/clouds_background2_3/
     # - .env
 
   fonts:
