@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planea/presentation/bloc/leaderboard/leaderboard_cubit.dart';
@@ -23,9 +24,25 @@ class BlurredBackground extends StatelessWidget {
             : score >= 0 && score <= 149
             ? '2_2'
             : '2_2';
-        return Image.asset(
-          'assets/images/background/clouds/clouds_background$codeBackground/orig.png',
-          fit: BoxFit.cover,
+        return Stack(
+          children: [
+            ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: Image.asset(
+                'assets/images/background/clouds/clouds_background$codeBackground/orig.png',
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+            ),
+            Container(
+              color: Colors.black.withAlpha(
+                (0.1 * 255).toInt(),
+              ), // ← contrôle l’assombrissement
+              width: double.infinity,
+              height: double.infinity,
+            ),
+          ],
         );
       },
     );
