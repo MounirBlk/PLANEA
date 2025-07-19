@@ -15,7 +15,7 @@ class SinglePlayerGameConfigEntity extends GameConfigEntity {
     this.pipesPositionArea = 300.0,
     this.pipesDistance = 400.0,
     this.pipeWidth = 80.0,
-    this.pipeHoleGap = 162,
+    this.pipeHoleGap = 165,
   });
 
   @override
